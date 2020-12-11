@@ -4,11 +4,15 @@ import ReactDOM from 'react-dom';
 import App from './views/App';
 import reportWebVitals from './reportWebVitals'; // eslint-disable-line
 
+import ApolloProvider from './components/ApolloProvider';
+
 import './index.scss';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ApolloProvider>
+      <App />
+    </ApolloProvider>
   </React.StrictMode>,
   document.getElementById('root'), // eslint-disable-line no-undef
 );
