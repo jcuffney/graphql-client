@@ -70,28 +70,28 @@ jobs:
       - store_artifacts:
             path: build
 
-  # infra: 
-  #   executor: node/default
-  #   steps:
-  #     - checkout
-  #     - run: npx serverless deploy --stage ${CIRCLE_BRANCH}
+  infra: 
+    executor: node/default
+    steps:
+      - checkout
+      - run: npx serverless deploy --stage ${CIRCLE_BRANCH}
 
-  # deploy:
-  #   executor: node/default
-  #   steps:
-  #     - checkout
-  #     - aws-cli/setup
-  #     - jq/install
-  #     # we want to get the build from the build job.
-  #     - attach_workspace:
-  #         at: /home/circleci/project
-  #     - run: |
-  #         DISTRIBUTION_ID=$(aws ssm get-parameter --name /cuffney/${CIRCLE_BRANCH}/website/distribution/id | jq -r '.Parameter.Value')
-  #         SOURCE_BUCKET_NAME=$(aws ssm get-parameter --name /cuffney/${CIRCLE_BRANCH}/website/source-bucket/name | jq -r '.Parameter.Value')
-  #         aws s3 sync ./build s3://$SOURCE_BUCKET_NAME --delete
-  #         aws cloudfront create-invalidation \
-  #           --distribution-id $DISTRIBUTION_ID \
-  #           --paths "/*"
+  deploy:
+    executor: node/default
+    steps:
+      - checkout
+      - aws-cli/setup
+      - jq/install
+      # we want to get the build from the build job.
+      - attach_workspace:
+          at: /home/circleci/project
+      - run: |
+          DISTRIBUTION_ID=$(aws ssm get-parameter --name /cuffney/${CIRCLE_BRANCH}/website/distribution/id | jq -r '.Parameter.Value')
+          SOURCE_BUCKET_NAME=$(aws ssm get-parameter --name /cuffney/${CIRCLE_BRANCH}/website/source-bucket/name | jq -r '.Parameter.Value')
+          aws s3 sync ./build s3://$SOURCE_BUCKET_NAME --delete
+          aws cloudfront create-invalidation \
+            --distribution-id $DISTRIBUTION_ID \
+            --paths "/*"
 
 workflows:
   version: 2
@@ -111,22 +111,21 @@ workflows:
           requires:
             - install
             - secrets
-      # - infra:
-      #     context: cuffney
-      #     requires:
-      #       - test
-      #       - lint
-      #       - build
-      #       - cypress/run/branch
-      #     filters:
-      #       branches:
-      #         only:
-      #           - main 
-      # - deploy:
-      #     context: cuffney
-      #     requires:
-      #       - infra
-      #     filters:
-      #       branches:
-      #         only:
-      #           - main
+      - infra:
+          context: cuffney
+          requires:
+            - test
+            - lint
+            - build
+          filters:
+            branches:
+              only:
+                - main 
+      - deploy:
+          context: cuffney
+          requires:
+            - infra
+          filters:
+            branches:
+              only:
+                - main
