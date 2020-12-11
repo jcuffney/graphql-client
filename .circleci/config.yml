@@ -1,0 +1,202 @@
+version: 2.1
+
+# Cache vs. Workspace vs. Artifact
+# https://circleci.com/blog/persisting-data-in-workflows-when-to-use-caching-artifacts-and-workspaces/
+
+orbs:
+  node: circleci/node@4.1.0
+  aws-cli: circleci/aws-cli@1.3.0
+  jq: circleci/jq@2.0.2
+  cypress: cypress-io/cypress@1.26.0
+
+jobs:
+
+  install:
+    executor: node/default
+    steps:
+      - checkout
+      - node/install-packages
+
+  secrets:
+    executor: node/default
+    steps:
+      - checkout
+      - aws-cli/setup
+      - jq/install
+      - run: |
+          # echo "REACT_APP_GOOGLE_ANALYTICS_TRACKING_ID=$(aws ssm get-parameter --name /cuffney/${CIRCLE_BRANCH}/website/google/analytics/tracking-id | jq -r '.Parameter.Value')" >> .env
+          # echo "REACT_APP_SENTRY_DSN=$(aws ssm get-parameter --name /cuffney/${CIRCLE_BRANCH}/website/sentry/dsn | jq -r '.Parameter.Value')" >> .env
+          # echo "REACT_APP_AUTH0_DOMAIN=$(aws ssm get-parameter --name /cuffney/${CIRCLE_BRANCH}/website/auth0/domain | jq -r '.Parameter.Value')" >> .env
+          # echo "REACT_APP_AUTH0_CLIENT_ID=$(aws ssm get-parameter --name /cuffney/${CIRCLE_BRANCH}/website/auth0/client-id | jq -r '.Parameter.Value')" >> .env
+          # echo "REACT_APP_AUTH0_AUDIENCE=$(aws ssm get-parameter --name /cuffney/${CIRCLE_BRANCH}/website/auth0/audience | jq -r '.Parameter.Value')" >> .env
+          echo "REACT_APP_INFRA_NODE_ENV=$(aws ssm get-parameter --name /cuffney/${CIRCLE_BRANCH}/infra/node-env | jq -r '.Parameter.Value')" >> .env
+          echo "REACT_APP_API_HOST=$(aws ssm get-parameter --name /cuffney/${CIRCLE_BRANCH}/api/host | jq -r '.Parameter.Value')" >> .env
+      - persist_to_workspace:
+          root: /home/circleci/project
+          paths:
+            - .env 
+      - store_artifacts:
+          path: .env
+
+  lint:
+    executor: node/default
+    steps:
+      - checkout
+      - node/install-packages
+      - run: npm run lint
+
+  test:
+    executor: node/default
+    steps:
+      - checkout
+      - node/install-packages
+      - run: npm run cover
+      - store_test_results:
+          path: coverage
+
+  build:
+    executor: node/default
+    steps:
+      - checkout
+      - node/install-packages
+      # get .env from secrets job.
+      - attach_workspace:
+          at: /home/circleci/project
+      - run: . ./.env && npm run build
+      - persist_to_workspace:
+          root: /home/circleci/project
+          paths:
+            - build/* 
+      - store_artifacts:
+            path: build
+
+  infra: 
+    executor: node/default
+    steps:
+      - checkout
+      - run: npx serverless deploy --stage ${CIRCLE_BRANCH}
+
+  deploy:
+    executor: node/default
+    steps:
+      - checkout
+      - aws-cli/setup
+      - jq/install
+      # we want to get the build from the build job.
+      - attach_workspace:
+          at: /home/circleci/project
+      - run: |
+          DISTRIBUTION_ID=$(aws ssm get-parameter --name /cuffney/${CIRCLE_BRANCH}/website/distribution/id | jq -r '.Parameter.Value')
+          SOURCE_BUCKET_NAME=$(aws ssm get-parameter --name /cuffney/${CIRCLE_BRANCH}/website/source-bucket/name | jq -r '.Parameter.Value')
+          aws s3 sync ./build s3://$SOURCE_BUCKET_NAME --delete
+          aws cloudfront create-invalidation \
+            --distribution-id $DISTRIBUTION_ID \
+            --paths "/*"
+
+workflows:
+  version: 2
+  primary:
+    jobs:
+      - install
+      - secrets:
+          context: cuffney
+      - lint:
+          requires:
+            - install
+      - test:
+          context: cuffney
+          requires:
+            - install
+      - build:
+          requires:
+            - install
+            - secrets
+      # installs cypress, project deps, builds project for subsequent jobs (feature branches only)
+      - cypress/install:
+          context: cuffney
+          build: npm run build
+          post-install:
+            - aws-cli/setup
+            - jq/install
+            - run: |
+                export BASE_URL="https://$(aws ssm get-parameter --name /cuffney/${CIRCLE_BRANCH}/website/source-bucket/name | jq -r '.Parameter.Value')"
+                jq -n --arg baseUrl "$BASE_URL" '{ baseUrl: $baseUrl }' > integration.json
+      # tests against local server since it isn't being deployed (feature branches only)
+      - cypress/run:
+          name: cypress/run/branch
+          requires:
+            - cypress/install
+          record: false       # record results on Cypress Dashboard
+          parallel: true      # split all specs across machines
+          parallelism: 2      # use 2 CircleCI machines to finish quickly
+          group: 'all tests'  # name this group "all tests" on the dashboard
+          start: 'npm start'  # start server before running tests
+          store_artifacts: true # stores screenshots / videos
+          config: 'baseUrl=http://localhost:8080'
+          wait-on: 'http://localhost:8080'
+      # tests that changes were deployed correctly (staging & production only)
+      - cypress/run:
+          name: cypress/run/deployment
+          requires:
+            - cypress/install
+            - deploy
+          # use config file to test against staging / production created in cypress/install
+          config-file: integration.json
+          parallel: true      # split all specs across machines
+          parallelism: 2      # use 2 CircleCI machines to finish quickly
+          group: 'all tests'  # name this group "all tests" on the dashboard
+          store_artifacts: true # stores screenshots / videos
+          filters:
+            branches:
+              only:
+                - dev
+                - master
+      - infra:
+          context: cuffney
+          requires:
+            - test
+            - lint
+            - build
+            - cypress/run/branch
+          filters:
+            branches:
+              only:
+                - dev
+                - master
+      - deploy:
+          context: cuffney
+          requires:
+            - infra
+          filters:
+            branches:
+              only:
+                - dev
+                - master
+
+  # nightly integration tests.
+  # 8PM EST.
+  nightly:
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - install
+      - lint:
+          requires:
+            - install
+      - test:
+          requires:
+            - install
+      - cypress/install
+      - cypress/run:
+          context: cuffney
+          requires:
+            - cypress/install
+          parallel: true      # split all specs across machines
+          parallelism: 2      # use 2 CircleCI machines to finish quickly
+          group: 'all tests'  # name this group "all tests" on the dashboard
+          config: "baseUrl=https://getonsetapp.com"
