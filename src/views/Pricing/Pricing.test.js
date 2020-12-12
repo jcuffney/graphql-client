@@ -29,6 +29,6 @@ test('renders learn react link', () => {
       <Pricing />
     </MockedProvider>
   );
-  const linkElement = screen.getByText(/Pricing/i);
+  const linkElement = screen.getByText(/Premium/i);
   expect(linkElement).toBeInTheDocument();
 });
