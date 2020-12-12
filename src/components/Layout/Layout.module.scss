@@ -1,4 +1,30 @@
-.layout {
-    background-color: #666666;
+
+// @import "_variables";
+$headerHeight: 64px;
+// $headerHeight: 54px;
+
+.site {
+  display: grid;
+  grid-template-areas:
+    "header"
+    "main"
+    "footer";
+  grid-template-rows: minmax(min-content, max-content) 1fr min-content;
+  min-height: 100vh;
+
+  header {
+    grid-area: header;
+    position: relative; // overrides position fixed from AppBar
+  }
+
+  main {
+    grid-area: main;
+    // min-height: calc(100vh - #{$headerHeight});
     height: 100%;
+    position: relative;
+  }
+
+  footer {
+    grid-area: footer;
+  }
 }

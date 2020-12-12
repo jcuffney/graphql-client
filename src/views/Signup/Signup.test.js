@@ -25,6 +25,6 @@ test('renders learn react link', () => {
       <Signup />
     </MockedProvider>
   );
-  const linkElement = screen.getByText(/learn react/i);
+  const linkElement = screen.getByText(/Signup/i);
   expect(linkElement).toBeInTheDocument();
 });

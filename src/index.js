@@ -2,24 +2,30 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { StylesProvider } from '@material-ui/core/styles';
+import { MuiThemeProvider, CssBaseline } from '@material-ui/core';
 
 import App from './views/App';
 import reportWebVitals from './reportWebVitals'; // eslint-disable-line
-
 import ApolloProvider from './components/ApolloProvider';
+import theme from './theme';
+import GlobalStyles from './GlobalStyles';
 
 import './index.scss';
 import 'fontsource-roboto';
 
 ReactDOM.render(
   <React.StrictMode>
-    <StylesProvider injectFirst>
-      <ApolloProvider>
-        <Router>
-          <App />
-        </Router>
-      </ApolloProvider>
-    </StylesProvider>
+    <MuiThemeProvider theme={theme}>
+      <CssBaseline />
+      <GlobalStyles />
+      <StylesProvider injectFirst>
+        <ApolloProvider>
+          <Router>
+            <App />
+          </Router>
+        </ApolloProvider>
+      </StylesProvider>
+    </MuiThemeProvider>
   </React.StrictMode>,
   document.getElementById('root'), // eslint-disable-line no-undef
 );

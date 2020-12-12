@@ -6,14 +6,16 @@ import Signup from 'views/Signup';
 import Home from 'views/Home';
 import ThankYou from 'views/ThankYou';
 import Layout from 'components/Layout';
+import NotFound from 'components/NotFound';
 
 export default applyTo(() => (
   <Layout>
     <Switch>
       <Route path="/" exact component={Home} />
       <Route path="/signup" exact component={Signup} />
+      <Route path="/pricing" exact component={ null } />
       <Route path="/thank-you" exact component={ThankYou} />
-      {/* <Route component={NotFound} /> */}
+      <Route component={NotFound} />
     </Switch>
   </Layout>
 ), pipe(
