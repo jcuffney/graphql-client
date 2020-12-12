@@ -1,9 +1,13 @@
 import React, { memo } from 'react';
-import { applyTo, pathOr, pipe } from 'ramda';
-import { Container, makeStyles, Typography, Grid, Accordion, AccordionSummary, AccordionDetails } from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { applyTo, pipe } from 'ramda';
+import {
+  Container,
+  makeStyles,
+  Typography,
+  Grid,
+} from '@material-ui/core';
 
-// import styles from './FAQ.module.scss';
+// import styles from './Terms.module.scss';
 
 const useStyles = makeStyles((theme) => ({
   '@global': {

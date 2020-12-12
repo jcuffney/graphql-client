@@ -1,6 +1,16 @@
 import React, { memo } from 'react';
 import { applyTo, pathOr, pipe } from 'ramda';
-import { Container, makeStyles, Typography, Card, Grid, CardHeader, CardContent, CardActions, Button } from '@material-ui/core';
+import {
+  Container,
+  makeStyles,
+  Typography,
+  Card,
+  Grid,
+  CardHeader,
+  CardContent,
+  CardActions,
+  Button,
+} from '@material-ui/core';
 import StarIcon from '@material-ui/icons/Star';
 
 import { useQuery, gql } from '@apollo/client';
@@ -90,10 +100,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default applyTo(() => {
-  const { data } = useQuery(SEARCH_PLANS, { variables: { input: { first: 3 } }});
+  const { data } = useQuery(SEARCH_PLANS, { variables: { input: { first: 3 } } });
   const plans = pathOr([], ['searchPlans', 'edges'], data);
   const classes = useStyles();
-  console.log(data); // eslint-disable-line
+  console.log(plans); // eslint-disable-line
   return (
     <>
       <Container maxWidth="sm" className={classes.heroContent}>
@@ -123,7 +133,7 @@ export default applyTo(() => {
                 <CardContent>
                   <div className={classes.cardPricing}>
                     <Typography component="h2" variant="h3" color="textPrimary">
-                      ${tier.price}
+                      { `$ ${tier.price}` }
                     </Typography>
                     <Typography variant="h6" color="textSecondary">
                       /mo

@@ -28,7 +28,7 @@ export default applyTo(() => {
 
   const handleResult = useCallback(async () => {
     console.log('Im Handling It...'); // eslint-disable-line no-console
-  });
+  }, []); // eslint-disable-line
 
   const handleCheckout = useCallback(async () => {
     await createCheckoutSession({
@@ -42,7 +42,7 @@ export default applyTo(() => {
     }).then(path(['data', 'createCheckoutSession', 'sessionId']))
       .then((sessionId) => stripe.redirectToCheckout({ sessionId })
         .then(handleResult));
-  });
+  }, [createCheckoutSession, handleResult]);
 
   return (
     <div>

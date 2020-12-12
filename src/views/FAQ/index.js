@@ -1,6 +1,14 @@
 import React, { memo } from 'react';
-import { applyTo, pathOr, pipe } from 'ramda';
-import { Container, makeStyles, Typography, Grid, Accordion, AccordionSummary, AccordionDetails } from '@material-ui/core';
+import { applyTo, pipe } from 'ramda';
+import {
+  Container,
+  makeStyles,
+  Typography,
+  Grid,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+} from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 // import styles from './FAQ.module.scss';
@@ -53,9 +61,10 @@ export default applyTo(() => {
             </AccordionSummary>
             <AccordionDetails>
               <Typography>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                Suspendisse malesuada lacus ex,
                 sit amet blandit leo lobortis eget.
-          </Typography>
+              </Typography>
             </AccordionDetails>
           </Accordion>
           <Accordion>
@@ -68,9 +77,10 @@ export default applyTo(() => {
             </AccordionSummary>
             <AccordionDetails>
               <Typography>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                Suspendisse malesuada lacus ex,
                 sit amet blandit leo lobortis eget.
-          </Typography>
+              </Typography>
             </AccordionDetails>
           </Accordion>
         </Grid>

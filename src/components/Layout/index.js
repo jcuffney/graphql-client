@@ -7,12 +7,12 @@ import Footer from './components/Footer';
 import styles from './Layout.module.scss';
 
 export default applyTo(({ children }) => (
-  <div className={ styles.site }>
+  <div className={styles.site}>
     <Header />
     <main>
       {children}
     </main>
-    <Footer className={ styles.footer } />
+    <Footer className={styles.footer} />
   </div>
 ), pipe(
   memo,

@@ -1,9 +1,13 @@
 import React, { memo } from 'react';
-import { applyTo, pathOr, pipe } from 'ramda';
-import { Container, makeStyles, Typography, Grid, Accordion, AccordionSummary, AccordionDetails } from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { applyTo, pipe } from 'ramda';
+import {
+  Container,
+  makeStyles,
+  Typography,
+  Grid,
+} from '@material-ui/core';
 
-// import styles from './FAQ.module.scss';
+// import styles from './Privacy.module.scss';
 
 const useStyles = makeStyles((theme) => ({
   '@global': {
@@ -34,7 +38,7 @@ export default applyTo(() => {
     <>
       <Container maxWidth="sm" className={classes.heroContent}>
         <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
-          Privacy Policy 
+          Privacy Policy
         </Typography>
       </Container>
       {/* End hero unit */}

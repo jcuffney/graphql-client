@@ -22,12 +22,12 @@ export default applyTo(() => {
       <Switch>
         <Route path="/" exact component={Home} />
         <Route path="/signup" exact component={Signup} />
-        <Route path="/pricing" exact component={ Pricing } />
+        <Route path="/pricing" exact component={Pricing} />
         <Route path="/thank-you" exact component={ThankYou} />
-        <Route path='/faq' exact component={ FAQ } />
-        <Route path='/contact' exact component={ Contact } />
-        <Route path='/terms' exact component={ Terms } />
-        <Route path='/privacy' exact component={ Privacy } />
+        <Route path="/faq" exact component={FAQ} />
+        <Route path="/contact" exact component={Contact} />
+        <Route path="/terms" exact component={Terms} />
+        <Route path="/privacy" exact component={Privacy} />
         <Route component={NotFound} />
       </Switch>
     </Layout>

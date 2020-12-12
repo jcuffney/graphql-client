@@ -1,7 +1,11 @@
 import React, { memo } from 'react';
-import { applyTo, pathOr, pipe } from 'ramda';
-import { Container, makeStyles, Typography, Grid, Accordion, AccordionSummary, AccordionDetails } from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { applyTo, pipe } from 'ramda';
+import {
+  Container,
+  makeStyles,
+  Typography,
+  Grid,
+} from '@material-ui/core';
 
 // import styles from './FAQ.module.scss';
 
@@ -37,7 +41,7 @@ export default applyTo(() => {
           Contact
         </Typography>
         <Typography variant="h5" align="center" color="textSecondary" component="p">
-          We'd love to hear from you!
+          We would love to hear from you!
         </Typography>
       </Container>
       {/* End hero unit */}
