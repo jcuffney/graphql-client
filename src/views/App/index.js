@@ -9,6 +9,9 @@ import Layout from 'components/Layout';
 import NotFound from 'components/NotFound';
 import Pricing from 'views/Pricing';
 import FAQ from 'views/FAQ';
+import Contact from 'views/Contact';
+import Terms from 'views/Terms';
+import Privacy from 'views/Privacy';
 
 export default applyTo(() => (
   <Layout>
@@ -18,6 +21,9 @@ export default applyTo(() => (
       <Route path="/pricing" exact component={ Pricing } />
       <Route path="/thank-you" exact component={ThankYou} />
       <Route path='/faq' exact component={ FAQ } />
+      <Route path='/contact' exact component={ Contact } />
+      <Route path='/terms' exact component={ Terms } />
+      <Route path='/privacy' exact component={ Privacy } />
       <Route component={NotFound} />
     </Switch>
   </Layout>
