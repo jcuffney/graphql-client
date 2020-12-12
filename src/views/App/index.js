@@ -8,6 +8,7 @@ import ThankYou from 'views/ThankYou';
 import Layout from 'components/Layout';
 import NotFound from 'components/NotFound';
 import Pricing from 'views/Pricing';
+import FAQ from 'views/FAQ';
 
 export default applyTo(() => (
   <Layout>
@@ -16,6 +17,7 @@ export default applyTo(() => (
       <Route path="/signup" exact component={Signup} />
       <Route path="/pricing" exact component={ Pricing } />
       <Route path="/thank-you" exact component={ThankYou} />
+      <Route path='/faq' exact component={ FAQ } />
       <Route component={NotFound} />
     </Switch>
   </Layout>
