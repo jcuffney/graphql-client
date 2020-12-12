@@ -53,6 +53,11 @@ function NavBar(props) {
       icon: <HomeIcon className="text-white" />,
     },
     {
+      link: '/pricing',
+      name: 'Pricing',
+      icon: <HomeIcon className="text-white" />,
+    },
+    {
       name: 'Login',
       icon: <LockOpenIcon className="text-white" />,
     },
