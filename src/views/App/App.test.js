@@ -5,6 +5,7 @@ import { MockedProvider } from '@apollo/client/testing';
 import App from '.';
 
 jest.mock('conf', () => ({}));
+jest.mock('lib/useTracking', () => () => ({}));
 
 const mocks = [];
 

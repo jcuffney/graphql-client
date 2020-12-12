@@ -24,7 +24,7 @@ jobs:
       - aws-cli/setup
       - jq/install
       - run: |
-          # echo "REACT_APP_GOOGLE_ANALYTICS_TRACKING_ID=$(aws ssm get-parameter --name /cuffney/${CIRCLE_BRANCH}/website/google/analytics/tracking-id | jq -r '.Parameter.Value')" >> .env
+          echo "REACT_APP_GOOGLE_ANALYTICS_TRACKING_ID=$(aws ssm get-parameter --name /cuffney/${CIRCLE_BRANCH}/website/google/analytics/tracking-id | jq -r '.Parameter.Value')" >> .env
           # echo "REACT_APP_SENTRY_DSN=$(aws ssm get-parameter --name /cuffney/${CIRCLE_BRANCH}/website/sentry/dsn | jq -r '.Parameter.Value')" >> .env
           # echo "REACT_APP_AUTH0_DOMAIN=$(aws ssm get-parameter --name /cuffney/${CIRCLE_BRANCH}/website/auth0/domain | jq -r '.Parameter.Value')" >> .env
           # echo "REACT_APP_AUTH0_CLIENT_ID=$(aws ssm get-parameter --name /cuffney/${CIRCLE_BRANCH}/website/auth0/client-id | jq -r '.Parameter.Value')" >> .env
