@@ -4,6 +4,8 @@ import { MemoryRouter as Router } from 'react-router-dom';
 
 import Home, { WHOAMI } from '.';
 
+jest.mock('conf', () => ({}));
+
 const mocks = [
   {
     request: {

@@ -1,25 +1,12 @@
 import { render, screen } from '@testing-library/react';
-import { MockedProvider } from '@apollo/client/testing';
 import { MemoryRouter as Router } from 'react-router-dom';
+import { MockedProvider } from '@apollo/client/testing';
 
 import App from '.';
 
+jest.mock('conf', () => ({}));
+
 const mocks = [];
-
-let windowSpy;
-
-beforeEach(() => {
-  windowSpy = jest.spyOn(window, "window", "get");
-  windowSpy.mockImplementation(() => ({
-    location: {
-      origin: "https://example.com"
-    }
-  }));
-});
-
-afterEach(() => {
-  windowSpy.mockRestore();
-});
 
 test('renders learn react link', () => {
   render(
