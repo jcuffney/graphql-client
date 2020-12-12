@@ -17,7 +17,7 @@ export default applyTo(() => {
   return (
     <div>
       <h1>Home</h1>
-      <code>{ data }</code>
+      <code>{ JSON.stringify(data, null, 2) }</code>
       <Link to="/signup">signup</Link>
     </div>
   );

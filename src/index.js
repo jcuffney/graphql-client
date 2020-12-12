@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { StylesProvider } from '@material-ui/core/styles';
 
 import App from './views/App';
 import reportWebVitals from './reportWebVitals'; // eslint-disable-line
@@ -8,14 +9,17 @@ import reportWebVitals from './reportWebVitals'; // eslint-disable-line
 import ApolloProvider from './components/ApolloProvider';
 
 import './index.scss';
+import 'fontsource-roboto';
 
 ReactDOM.render(
   <React.StrictMode>
-    <ApolloProvider>
-      <Router>
-        <App />
-      </Router>
-    </ApolloProvider>
+    <StylesProvider injectFirst>
+      <ApolloProvider>
+        <Router>
+          <App />
+        </Router>
+      </ApolloProvider>
+    </StylesProvider>
   </React.StrictMode>,
   document.getElementById('root'), // eslint-disable-line no-undef
 );
