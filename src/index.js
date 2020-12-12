@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 import App from './views/App';
 import reportWebVitals from './reportWebVitals'; // eslint-disable-line
@@ -11,7 +12,9 @@ import './index.scss';
 ReactDOM.render(
   <React.StrictMode>
     <ApolloProvider>
-      <App />
+      <Router>
+        <App />
+      </Router>
     </ApolloProvider>
   </React.StrictMode>,
   document.getElementById('root'), // eslint-disable-line no-undef
