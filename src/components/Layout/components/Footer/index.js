@@ -7,10 +7,9 @@ import {
   Box,
   IconButton,
   Hidden,
-  withStyles,
-  withWidth,
   isWidthUp,
   TextField,
+  makeStyles,
 } from '@material-ui/core';
 import PhoneIcon from '@material-ui/icons/Phone';
 import MailIcon from '@material-ui/icons/Mail';
@@ -19,7 +18,7 @@ import transitions from '@material-ui/core/styles/transitions';
 // import ColoredButton from '../../../shared/components/ColoredButton';
 import cx from 'classnames';
 
-const styles = (theme) => ({
+const useStyles = makeStyles((theme) => ({
   footerInner: {
     backgroundColor: theme.palette.common.darkBlack,
     paddingTop: theme.spacing(8),
@@ -75,7 +74,7 @@ const styles = (theme) => ({
   whiteBg: {
     backgroundColor: theme.palette.common.white,
   },
-});
+}));
 
 const infos = [
   {
@@ -157,100 +156,101 @@ const socialIcons = [
 
 export default applyTo(({
   className,
-  classes,
   width,
-}) => (
-  <footer className="lg-p-top">
-    {/* <WaveBorder
-      upperColor='#FFFFFF'
-      lowerColor={theme.palette.common.darkBlack}
-      animationNegativeDelay={4}
-    /> */}
-    <div className={cx(classes.footerInner, className)}>
-      <Grid container spacing={isWidthUp('md', width) ? 10 : 5}>
-        <Grid item xs={12} md={6} lg={4}>
-          <form>
-            <Box display="flex" flexDirection="column">
-              <Box mb={1}>
-                <TextField
-                  variant="outlined"
-                  multiline
-                  placeholder="Get in touch with us"
-                  InputProps={{
-                    'aria-label': 'Get in Touch',
-                    className: classes.whiteBg,
-                  }}
-                  rows={4}
-                  fullWidth
-                  required
-                />
-              </Box>
-              {/* <ColoredButton
-                color={theme.palette.common.white}
-                variant="outlined"
-                type="submit"
-              >
-                Send Message
-              </ColoredButton> */}
-            </Box>
-          </form>
-        </Grid>
-        <Hidden mdDown>
+}) => {
+  const classes = useStyles();
+  return (
+    <footer className="lg-p-top">
+      {/* <WaveBorder
+        upperColor='#FFFFFF'
+        lowerColor={theme.palette.common.darkBlack}
+        animationNegativeDelay={4}
+      /> */}
+      <div className={cx(classes.footerInner, className)}>
+        <Grid container spacing={isWidthUp('md', width) ? 10 : 5}>
           <Grid item xs={12} md={6} lg={4}>
-            <Box display="flex" justifyContent="center">
-              <div>
-                {infos.map((info) => (
-                  <Box display="flex" mb={1} key={info.icon}>
-                    <Box mr={2}>
-                      <IconButton
-                        className={classes.infoIcon}
-                        tabIndex={-1}
-                        disabled
+            <form>
+              <Box display="flex" flexDirection="column">
+                <Box mb={1}>
+                  <TextField
+                    variant="outlined"
+                    multiline
+                    placeholder="Get in touch with us"
+                    InputProps={{
+                      'aria-label': 'Get in Touch',
+                      className: classes.whiteBg,
+                    }}
+                    rows={4}
+                    fullWidth
+                    required
+                  />
+                </Box>
+                {/* <ColoredButton
+                  color={theme.palette.common.white}
+                  variant="outlined"
+                  type="submit"
+                >
+                  Send Message
+                </ColoredButton> */}
+              </Box>
+            </form>
+          </Grid>
+          <Hidden mdDown>
+            <Grid item xs={12} md={6} lg={4}>
+              <Box display="flex" justifyContent="center">
+                <div>
+                  {infos.map((info) => (
+                    <Box display="flex" mb={1} key={info.icon}>
+                      <Box mr={2}>
+                        <IconButton
+                          className={classes.infoIcon}
+                          tabIndex={-1}
+                          disabled
+                        >
+                          {info.icon}
+                        </IconButton>
+                      </Box>
+                      <Box
+                        display="flex"
+                        flexDirection="column"
+                        justifyContent="center"
                       >
-                        {info.icon}
-                      </IconButton>
+                        <Typography variant="h6" className="text-white">
+                          {info.description}
+                        </Typography>
+                      </Box>
                     </Box>
-                    <Box
-                      display="flex"
-                      flexDirection="column"
-                      justifyContent="center"
-                    >
-                      <Typography variant="h6" className="text-white">
-                        {info.description}
-                      </Typography>
-                    </Box>
-                  </Box>
-                ))}
-              </div>
+                  ))}
+                </div>
+              </Box>
+            </Grid>
+          </Hidden>
+          <Grid item xs={12} md={6} lg={4}>
+            <Typography variant="h6" paragraph className="text-white">
+              About the Company
+            </Typography>
+            <Typography style={{ color: '#8f9296' }} paragraph>
+              Lorem ipsum dolor sit amet, consectateur adispicing elit. Fusce
+              euismod convallis velit, eu auctor lacus vehicula sit amet.
+            </Typography>
+            <Box display="flex">
+              {socialIcons.map((socialIcon) => (
+                <Box key={socialIcon.label} mr={1}>
+                  <IconButton
+                    aria-label={socialIcon.label}
+                    className={classes.socialIcon}
+                    href={socialIcon.href}
+                  >
+                    {socialIcon.icon}
+                  </IconButton>
+                </Box>
+              ))}
             </Box>
           </Grid>
-        </Hidden>
-        <Grid item xs={12} md={6} lg={4}>
-          <Typography variant="h6" paragraph className="text-white">
-            About the Company
-          </Typography>
-          <Typography style={{ color: '#8f9296' }} paragraph>
-            Lorem ipsum dolor sit amet, consectateur adispicing elit. Fusce
-            euismod convallis velit, eu auctor lacus vehicula sit amet.
-          </Typography>
-          <Box display="flex">
-            {socialIcons.map((socialIcon) => (
-              <Box key={socialIcon.label} mr={1}>
-                <IconButton
-                  aria-label={socialIcon.label}
-                  className={classes.socialIcon}
-                  href={socialIcon.href}
-                >
-                  {socialIcon.icon}
-                </IconButton>
-              </Box>
-            ))}
-          </Box>
         </Grid>
-      </Grid>
-    </div>
-  </footer>
-), pipe(
-  withWidth()(withStyles(styles, { withTheme: true })),
+      </div>
+    </footer>
+  );
+}, pipe(
   memo,
 ));

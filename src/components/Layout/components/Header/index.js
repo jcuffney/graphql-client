@@ -8,35 +8,35 @@ import {
   Button,
   Hidden,
   IconButton,
+  makeStyles,
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import HomeIcon from '@material-ui/icons/Home';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 
-// const styles = (theme) => ({
-//   appBar: {
-//     boxShadow: theme.shadows[6],
-//     backgroundColor: theme.palette.common.white,
-//   },
-//   toolbar: {
-//     display: 'flex',
-//     justifyContent: 'space-between',
-//   },
-//   menuButtonText: {
-//     fontSize: theme.typography.body1.fontSize,
-//     fontWeight: theme.typography.h6.fontWeight,
-//   },
-//   brandText: {
-//     fontFamily: "'Baloo Bhaijaan', cursive",
-//     fontWeight: 400,
-//   },
-//   noDecoration: {
-//     textDecoration: 'none !important',
-//   },
-// });
+const useStyles = makeStyles((theme) => ({
+  appBar: {
+    boxShadow: theme.shadows[6],
+    backgroundColor: theme.palette.common.white,
+  },
+  toolbar: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+  menuButtonText: {
+    fontSize: theme.typography.body1.fontSize,
+    fontWeight: theme.typography.h6.fontWeight,
+  },
+  brandText: {
+    fontFamily: "'Baloo Bhaijaan', cursive",
+    fontWeight: 400,
+  },
+  noDecoration: {
+    textDecoration: 'none !important',
+  },
+}));
 
 export default applyTo(({
-  classes,
   handleMobileDrawerOpen,
   handleMobileDrawerClose,
 }) => {
@@ -66,6 +66,9 @@ export default applyTo(({
       icon: <LockOpenIcon className="text-white" />,
     },
   ];
+
+  const classes = useStyles();
+
   return (
     <AppBar className={classes.appBar}>
       <Toolbar className={classes.toolbar}>
