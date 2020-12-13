@@ -6,6 +6,8 @@
     "@apollo/client": "^3.3.5",
     "@material-ui/core": "^4.11.2",
     "@material-ui/icons": "^4.11.2",
+    "@sentry/react": "^5.29.0",
+    "@sentry/tracing": "^5.29.0",
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.2.2",
     "@testing-library/user-event": "^12.5.0",
